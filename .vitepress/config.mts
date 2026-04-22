@@ -17,6 +17,7 @@ export default defineConfig({
           { text: '介绍', link: '/suan-api/introduction' },
           { text: '部署', link: '/suan-api/deploy' },
           { text: 'Playwright', link: '/suan-api/playwright' },
+          { text: 'API 文档', link: '/suan-api/api-docs' },
           { text: 'LLM 工具', link: '/suan-api/llm-tools' },
         ]
       },
