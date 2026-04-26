@@ -10,6 +10,8 @@ API 是这个东西的工作，作为 API，以及 MCP。
 
 MCP 是模型上下文协议，用于给 LLM 提供可供调用的工具。
 
+NJUPT Suan API 已经可以使用，查看[部署](./deploy.md)页面了解如何部署。在仓库中查看最新的版本日志（[GitHub](https://github.com/mangofanfan/NJUPT-Suan-API/blob/master/CHANGELOG.md)|[Mango Gitea](https://gitea.mangofanfan.cn/SuanDev/NJUPT-Suan-API/src/branch/master/CHANGELOG.md)）。
+
 ## 特别说明
 
 由于在网络上缺少与南京邮电大学相关的 Web API，已有的项目（[NJUPT-API](https://github.com/gaoliang/NJUPT-API)）也已经年久失修，

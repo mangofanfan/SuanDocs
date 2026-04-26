@@ -4,7 +4,7 @@
 
 ## cli 命令
 
-NJUPT Suan API 现在拥有一个 cli 命令行，可以作为入口以及管理工具。在设计上，这个命令行工具叫做 `suanapi`。
+NJUPT Suan API 现在拥有一个 cli 命令行，可以作为入口以及管理工具。在设计上，这个命令行工具叫做 `njupt-suan-api`，与包名一致。
 
 |命令|简介|
 |--|--|
@@ -12,7 +12,11 @@ NJUPT Suan API 现在拥有一个 cli 命令行，可以作为入口以及管理
 |token|显示以及生成新的管理后端令牌|
 |run|运行 NJUPT Suan API，支持传入 host port reload 参数|
 
+使用 `njupt-suan-api --version` 查看已安装的 NJUPT Suan API 版本。
+
 cli 拥有完整的帮助文档，你可以使用 `--help` 查看。
+
+cli 的启动速度可能有些慢，这是因为 cli 会加载许多基于 FastAPI 工作的模块，这是一个技术性妥协，需要等待未来再优化了。
 
 ## 部署 Suan API 示例
 
@@ -20,36 +24,32 @@ cli 拥有完整的帮助文档，你可以使用 `--help` 查看。
 
 ### 使用 uv 部署
 
-芒果计划把 NJUPT Suan API 做成一个 uv 工具，但现在看来好像还存在一些问题。
-
-你现在可以将 NJUPT Suan API 作为一个依赖安装，然后使用命令行启动。NJUPT Suan API 已经发布至 pypi。
+芒果已经把 NJUPT Suan API 做成一个 uv 工具，你现在可以直接用如下命令部署它。
 
 ```bash
-# 初始化 uv 项目
-uv init -p 3.13
+# 先指定一个工作目录，建议创建一个新文件夹。
+mkdir xxx
+cd xxx
 
-# 安装
-uv add njupt-suan-api
+# 将 njupt-suan-api 作为工具安装，指定 Python 版本为 3.13。
+uv tool install njupt-suan-api -p 3.13
 
-# 初始化 NJUPT Suan API
-# 只需要首次运行前初始化一次即可
-uv run suanapi init -f
+# 在当前目录下初始化。
+# 也可以使用 uvx njupt-suan-api 来调用，下同。
+njupt-suan-api init -f
 
-# 运行
-uv run suanapi run
+# 运行项目。
+# 数据会存储在当前目录下，因此你每次都需要在当前目录下运行 Suan API，设计为之。
+njupt-suan-api run
 ```
 
 初始化时需要加上 `-f` 是一个技术性妥协，芒果需要研究一些更优雅的解决方法。不过目前是可以使用的，芒果已经在 Windows 和 Linux 上做过测试了~
 
 ### 使用 Docker 部署
 
+感觉 Docker 好麻烦啊，等我再研究研究好嘛。
+
 ### 从源码部署
-
-:::warning 性能警告
-直接从 `main.py` 入口运行可能会导致一些潜在的性能问题，表现为 Suan API 会占用较多的性能，而这可能不是你希望看到的。
-
-等芒果帆帆再完善完善，然后争取提供其他更方便的部署选项吧~
-:::
 
 使用 git 命令从 Mango Gitea 上拉取源代码：
 
@@ -75,21 +75,28 @@ uv run playwright install chromium
 
 这将会安装 chromium 供 playwright 使用。Suan API 通过这个 chromium 来模拟真实用户行为，以及截取课程表图片。
 
-安装 chromium 可能需要一段**比较长的时间**。大体上这是能够成功的，只是需要一段**比较长的时间**。
+安装 chromium 可能需要一段**比较长的时间**。
 
-然后（或者同时），在 `NJUPT-Suan-API/webui` 目录下运行：
+如需从源码运行，你还需要自行构建 WebUI。请在 `NJUPT-Suan-API/webui` 目录下运行：
 
 ```bash
 pnpm install
 pnpm build
 ```
 
-这将会安装 WebUI 所使用的依赖，然后构建 WebUI。这一般是很快的。
+这将会安装 WebUI 所使用的依赖，然后构建 WebUI。这一般是很快的。WebUI 的构建产物位于 `src/njupt_suan_api/static` 中，该目录已经位于 `.gitignore` 中，无需担心其被 git 管理。
 
 现在，回到 `NJUPT-Suan-API` 目录下，使用以下命令启动项目：
 
 ```bash
-uv run main.py
+uv run src/njupt_suan_api/manage.py init -f
+uv run src/njupt_suan_api/manage.py run
+```
+
+或者从 `main.py` 入口启动，但不建议，未来可能会移除 `main.py`。
+
+```bash
+uv run src/njupt_suan_api/main.py
 ```
 
 NJUPT Suan API 应当可以正常启动。
