@@ -1,0 +1,1 @@
+import{_ as e,o as t,c as r,ai as n}from"./chunks/framework.BQJGzFHV.js";const m=JSON.parse('{"title":"README 自述文件","description":"","frontmatter":{},"headers":[],"relativePath":"readme.md","filePath":"readme.md"}'),s={name:"readme.md"};function o(i,a,l,p,d,_){return t(),r("div",null,[...a[0]||(a[0]=[n("",10)])])}const g=e(s,[["render",o]]);export{m as __pageData,g as default};
